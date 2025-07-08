@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCHGLand - Minecraft Server</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-cube"></i>
+                <h1>MCHGLand</h1>
+            </div>
+            <nav class="nav">
+                <a href="#home" class="nav-link active">Home</a>
+                <a href="#connect" class="nav-link">Connect</a>
+                <a href="#status" class="nav-link">Status</a>
+                <a href="/admin.html" class="nav-link admin-link">
+                    <i class="fas fa-cog"></i> Admin
+                </a>
+            </nav>
+        </header>
+
+        <main class="main">
+            <section id="home" class="section active">
+                <div class="hero">
+                    <h2>Welcome to MCHGLand</h2>
+                    <p>A 24/7 Minecraft server supporting both Java and Bedrock editions</p>
+                    <div class="server-info">
+                        <div class="info-card">
+                            <i class="fas fa-server"></i>
+                            <h3>Server Address</h3>
+                            <p class="server-address">mchgland.duckdns.org</p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-users"></i>
+                            <h3>Cross-Platform</h3>
+                            <p>Java & Bedrock Compatible</p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-clock"></i>
+                            <h3>Uptime</h3>
+                            <p>24/7 Online</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="connect" class="section">
+                <div class="connect-info">
+                    <h2>How to Connect</h2>
+                    <div class="connect-methods">
+                        <div class="method-card">
+                            <i class="fas fa-desktop"></i>
+                            <h3>Java Edition</h3>
+                            <div class="connection-details">
+                                <p><strong>Server Address:</strong> mchgland.duckdns.org</p>
+                                <p><strong>Port:</strong> 25565</p>
+                                <p><strong>Version:</strong> 1.20.4+</p>
+                                <p><strong>Status:</strong> Live Server</p>
+                            </div>
+                            <ol>
+                                <li>Open Minecraft Java Edition</li>
+                                <li>Go to Multiplayer</li>
+                                <li>Click "Add Server"</li>
+                                <li>Enter server address: <code>mchgland.duckdns.org:25565</code></li>
+                                <li>Click "Done" and join the server</li>
+                            </ol>
+                        </div>
+                        <div class="method-card">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h3>Bedrock Edition</h3>
+                            <div class="connection-details">
+                                <p><strong>Server Address:</strong> mchgland.duckdns.org</p>
+                                <p><strong>Port:</strong> 19132</p>
+                                <p><strong>Version:</strong> Latest</p>
+                                <p><strong>Dev Address:</strong> mchgland.onrender.com</p>
+                            </div>
+                            <ol>
+                                <li>Open Minecraft Bedrock Edition</li>
+                                <li>Go to Play → Servers</li>
+                                <li>Click "Add Server"</li>
+                                <li>Enter server address: <code>mchgland.duckdns.org</code></li>
+                                <li>Enter port: <code>19132</code></li>
+                                <li>Save and join the server</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="status" class="section">
+                <div class="status-info">
+                    <h2>Server Status</h2>
+                    <div class="status-grid">
+                        <div class="status-card">
+                            <i class="fas fa-circle status-indicator" id="statusIndicator"></i>
+                            <h3>Server Status</h3>
+                            <p id="serverStatus">Checking...</p>
+                        </div>
+                        <div class="status-card">
+                            <i class="fas fa-users"></i>
+                            <h3>Online Players</h3>
+                            <p id="playerCount">0/20</p>
+                        </div>
+                        <div class="status-card">
+                            <i class="fas fa-clock"></i>
+                            <h3>Uptime</h3>
+                            <p id="uptime">0s</p>
+                        </div>
+                        <div class="status-card">
+                            <i class="fas fa-globe"></i>
+                            <h3>Address</h3>
+                            <p>mchgland.duckdns.org</p>
+                        </div>
+                    </div>
+                    <div class="player-list">
+                        <h3>Online Players</h3>
+                        <div id="playerList" class="players">
+                            <p class="no-players">No players online</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 MCHGLand. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // Navigation
+        const navLinks = document.querySelectorAll('.nav-link:not(.admin-link)');
+        const sections = document.querySelectorAll('.section');
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                
+                // Remove active class from all nav links and sections
+                navLinks.forEach(nl => nl.classList.remove('active'));
+                sections.forEach(section => section.classList.remove('active'));
+                
+                // Add active class to clicked link and target section
+                link.classList.add('active');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+        // WebSocket connection for real-time updates
+        const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+        const wsUrl = `${protocol}//${window.location.host}/ws`;
+        
+        let socket;
+        let reconnectInterval;
+        const onlinePlayers = new Set();
+
+        function connectWebSocket() {
+            socket = new WebSocket(wsUrl);
+            
+            socket.onopen = () => {
+                console.log('WebSocket connected');
+                clearInterval(reconnectInterval);
+            };
+            
+            socket.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                handleWebSocketMessage(data);
+            };
+            
+            socket.onclose = () => {
+                console.log('WebSocket disconnected');
+                // Attempt to reconnect
+                reconnectInterval = setInterval(() => {
+                    console.log('Attempting to reconnect...');
+                    connectWebSocket();
+                }, 5000);
+            };
+            
+            socket.onerror = (error) => {
+                console.error('WebSocket error:', error);
+            };
+        }
+
+        function handleWebSocketMessage(data) {
+            switch (data.type) {
+                case 'status':
+                    updateServerStatus(data.data);
+                    break;
+                case 'playerJoin':
+                    onlinePlayers.add(data.data.player);
+                    updatePlayerList();
+                    break;
+                case 'playerLeave':
+                    onlinePlayers.delete(data.data.player);
+                    updatePlayerList();
+                    break;
+                case 'log':
+                    console.log('Server log:', data.data.message);
+                    break;
+            }
+        }
+
+        function updateServerStatus(status) {
+            const statusIndicator = document.getElementById('statusIndicator');
+            const serverStatus = document.getElementById('serverStatus');
+            const playerCount = document.getElementById('playerCount');
+            const uptime = document.getElementById('uptime');
+            
+            if (status.running) {
+                statusIndicator.className = 'fas fa-circle status-indicator online';
+                serverStatus.textContent = 'Online';
+            } else {
+                statusIndicator.className = 'fas fa-circle status-indicator offline';
+                serverStatus.textContent = 'Offline';
+            }
+            
+            playerCount.textContent = `${status.players}/${status.maxPlayers}`;
+            uptime.textContent = formatUptime(status.uptime);
+        }
+
+        function updatePlayerList() {
+            const playerList = document.getElementById('playerList');
+            
+            if (onlinePlayers.size === 0) {
+                playerList.innerHTML = '<p class="no-players">No players online</p>';
+            } else {
+                playerList.innerHTML = Array.from(onlinePlayers)
+                    .map(player => `<span class="player-tag">${player}</span>`)
+                    .join('');
+            }
+        }
+
+        function formatUptime(ms) {
+            if (ms === 0) return '0s';
+            
+            const seconds = Math.floor((ms / 1000) % 60);
+            const minutes = Math.floor((ms / (1000 * 60)) % 60);
+            const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
+            const days = Math.floor(ms / (1000 * 60 * 60 * 24));
+            
+            let result = '';
+            if (days > 0) result += `${days}d `;
+            if (hours > 0) result += `${hours}h `;
+            if (minutes > 0) result += `${minutes}m `;
+            if (seconds > 0) result += `${seconds}s`;
+            
+            return result.trim();
+        }
+
+        // Initialize WebSocket connection
+        connectWebSocket();
+
+        // Also fetch initial status via HTTP
+        fetch('/api/status')
+            .then(response => response.json())
+            .then(status => {
+                updateServerStatus(status);
+            })
+            .catch(error => {
+                console.error('Failed to fetch server status:', error);
+            });
+    </script>
+</body>
+</html>

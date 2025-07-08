@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCHGLand - Admin Panel</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-cube"></i>
+                <h1>MCHGLand Admin</h1>
+            </div>
+            <nav class="nav">
+                <a href="/index.html" class="nav-link">
+                    <i class="fas fa-home"></i> Home
+                </a>
+                <button id="logoutBtn" class="nav-link logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </nav>
+        </header>
+
+        <main class="main">
+            <!-- Login Section -->
+            <section id="loginSection" class="section active">
+                <div class="login-container">
+                    <div class="login-card">
+                        <h2>Admin Login</h2>
+                        <form id="loginForm">
+                            <div class="form-group">
+                                <label for="passcode">Passcode:</label>
+                                <input type="password" id="passcode" name="passcode" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-sign-in-alt"></i> Login
+                            </button>
+                        </form>
+                        <div id="loginError" class="error-message" style="display: none;"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Admin Panel Section -->
+            <section id="adminSection" class="section">
+                <div class="admin-container">
+                    <!-- Server Status -->
+                    <div class="admin-card">
+                        <h3><i class="fas fa-server"></i> Server Status</h3>
+                        <div class="status-info">
+                            <div class="status-row">
+                                <span>Status:</span>
+                                <span id="adminServerStatus" class="status-value">Checking...</span>
+                            </div>
+                            <div class="status-row">
+                                <span>Players:</span>
+                                <span id="adminPlayerCount" class="status-value">0/20</span>
+                            </div>
+                            <div class="status-row">
+                                <span>Uptime:</span>
+                                <span id="adminUptime" class="status-value">0s</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Server Controls -->
+                    <div class="admin-card">
+                        <h3><i class="fas fa-play-circle"></i> Server Controls</h3>
+                        <div class="control-buttons">
+                            <button id="startServerBtn" class="btn btn-success">
+                                <i class="fas fa-play"></i> Start Server
+                            </button>
+                            <button id="stopServerBtn" class="btn btn-danger">
+                                <i class="fas fa-stop"></i> Stop Server
+                            </button>
+                            <button id="restartServerBtn" class="btn btn-warning">
+                                <i class="fas fa-redo"></i> Restart Server
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Operator Management -->
+                    <div class="admin-card">
+                        <h3><i class="fas fa-user-shield"></i> Operator Management</h3>
+                        <div class="op-controls">
+                            <div class="input-group">
+                                <input type="text" id="opPlayerName" placeholder="Player name" class="form-control">
+                                <button id="addOpBtn" class="btn btn-primary">
+                                    <i class="fas fa-plus"></i> Add Op
+                                </button>
+                                <button id="removeOpBtn" class="btn btn-secondary">
+                                    <i class="fas fa-minus"></i> Remove Op
+                                </button>
+                            </div>
+                        </div>
+                        <div class="op-list">
+                            <h4>Current Operators:</h4>
+                            <div id="opList" class="list-container">
+                                <p class="no-items">No operators</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ban Management -->
+                    <div class="admin-card">
+                        <h3><i class="fas fa-ban"></i> Ban Management</h3>
+                        <div class="ban-controls">
+                            <div class="input-group">
+                                <input type="text" id="banPlayerName" placeholder="Player name" class="form-control">
+                                <input type="text" id="banReason" placeholder="Reason (optional)" class="form-control">
+                                <button id="banPlayerBtn" class="btn btn-danger">
+                                    <i class="fas fa-ban"></i> Ban Player
+                                </button>
+                            </div>
+                            <div class="input-group">
+                                <input type="text" id="unbanPlayerName" placeholder="Player to unban" class="form-control">
+                                <button id="unbanPlayerBtn" class="btn btn-success">
+                                    <i class="fas fa-check"></i> Unban Player
+                                </button>
+                            </div>
+                        </div>
+                        <div class="ban-list">
+                            <h4>Banned Players:</h4>
+                            <div id="banList" class="list-container">
+                                <p class="no-items">No banned players</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Server Logs -->
+                    <div class="admin-card">
+                        <h3><i class="fas fa-file-alt"></i> Server Logs</h3>
+                        <div class="log-container">
+                            <div id="serverLogs" class="log-output">
+                                <p>Logs will appear here...</p>
+                            </div>
+                            <button id="clearLogsBtn" class="btn btn-secondary">
+                                <i class="fas fa-trash"></i> Clear Logs
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2024 MCHGLand Admin Panel. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-content">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading...</p>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
