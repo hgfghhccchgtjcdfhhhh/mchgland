@@ -57,10 +57,9 @@
                             <i class="fas fa-desktop"></i>
                             <h3>Java Edition</h3>
                             <div class="connection-details">
-                                <p><strong>Server Address:</strong> mchgland.duckdns.org</p>
+                                <p><strong>Server Address:</strong> mchgland.onrender.com</p>
                                 <p><strong>Port:</strong> 25565</p>
-                                <p><strong>Version:</strong> 1.20.4+</p>
-                                <p><strong>Status:</strong> Live Server</p>
+                                <p><strong>Version:</strong> 1.20.4</p>
                             </div>
                             <ol>
                                 <li>Open Minecraft Java Edition</li>
@@ -83,7 +82,7 @@
                                 <li>Open Minecraft Bedrock Edition</li>
                                 <li>Go to Play → Servers</li>
                                 <li>Click "Add Server"</li>
-                                <li>Enter server address: <code>mchgland.duckdns.org</code></li>
+                                <li>Enter server address: <code>mchgland.onrender.com</code></li>
                                 <li>Enter port: <code>19132</code></li>
                                 <li>Save and join the server</li>
                             </ol>
@@ -141,11 +140,11 @@
             link.addEventListener('click', (e) => {
                 e.preventDefault();
                 const targetId = link.getAttribute('href').substring(1);
-                
+
                 // Remove active class from all nav links and sections
                 navLinks.forEach(nl => nl.classList.remove('active'));
                 sections.forEach(section => section.classList.remove('active'));
-                
+
                 // Add active class to clicked link and target section
                 link.classList.add('active');
                 document.getElementById(targetId).classList.add('active');
@@ -155,24 +154,24 @@
         // WebSocket connection for real-time updates
         const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
         const wsUrl = `${protocol}//${window.location.host}/ws`;
-        
+
         let socket;
         let reconnectInterval;
         const onlinePlayers = new Set();
 
         function connectWebSocket() {
             socket = new WebSocket(wsUrl);
-            
+
             socket.onopen = () => {
                 console.log('WebSocket connected');
                 clearInterval(reconnectInterval);
             };
-            
+
             socket.onmessage = (event) => {
                 const data = JSON.parse(event.data);
                 handleWebSocketMessage(data);
             };
-            
+
             socket.onclose = () => {
                 console.log('WebSocket disconnected');
                 // Attempt to reconnect
@@ -181,7 +180,7 @@
                     connectWebSocket();
                 }, 5000);
             };
-            
+
             socket.onerror = (error) => {
                 console.error('WebSocket error:', error);
             };
@@ -211,7 +210,7 @@
             const serverStatus = document.getElementById('serverStatus');
             const playerCount = document.getElementById('playerCount');
             const uptime = document.getElementById('uptime');
-            
+
             if (status.running) {
                 statusIndicator.className = 'fas fa-circle status-indicator online';
                 serverStatus.textContent = 'Online';
@@ -219,14 +218,14 @@
                 statusIndicator.className = 'fas fa-circle status-indicator offline';
                 serverStatus.textContent = 'Offline';
             }
-            
+
             playerCount.textContent = `${status.players}/${status.maxPlayers}`;
             uptime.textContent = formatUptime(status.uptime);
         }
 
         function updatePlayerList() {
             const playerList = document.getElementById('playerList');
-            
+
             if (onlinePlayers.size === 0) {
                 playerList.innerHTML = '<p class="no-players">No players online</p>';
             } else {
@@ -238,18 +237,18 @@
 
         function formatUptime(ms) {
             if (ms === 0) return '0s';
-            
+
             const seconds = Math.floor((ms / 1000) % 60);
             const minutes = Math.floor((ms / (1000 * 60)) % 60);
             const hours = Math.floor((ms / (1000 * 60 * 60)) % 24);
             const days = Math.floor(ms / (1000 * 60 * 60 * 24));
-            
+
             let result = '';
             if (days > 0) result += `${days}d `;
             if (hours > 0) result += `${hours}h `;
             if (minutes > 0) result += `${minutes}m `;
             if (seconds > 0) result += `${seconds}s`;
-            
+
             return result.trim();
         }
 
