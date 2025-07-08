@@ -210,7 +210,7 @@ app.get('/api/status', (req, res) => {
         players: mcServer.getPlayerCount(),
         maxPlayers: mcServer.getMaxPlayers(),
         uptime: mcServer.getUptime(),
-        address: 'mchgland.duckdns.org',
+        address: 'mchgland.onrender.com',
         port: 25565
     });
 });
@@ -262,8 +262,8 @@ async function initializeServer() {
 // Start the web server
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`Server running on port ${PORT}`);
-    console.log(`Production server: mchgland.duckdns.org:25565`);
-    console.log(`Development server: mchgland.onrender.com:${PORT}`);
+    console.log(`Server: mchgland.onrender.com:25565`);
+    console.log(`Web interface: mchgland.onrender.com:${PORT}`);
     initializeServer();
 });
 
