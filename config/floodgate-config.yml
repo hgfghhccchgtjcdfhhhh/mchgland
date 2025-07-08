@@ -1,0 +1,122 @@
+# Floodgate Configuration File
+
+# This is the key which is used to ensure that data is coming from the proxy.
+# If you have multiple servers, it is recommended to keep the key the same on all of them.
+key-file: key.pem
+
+# The username prefix for Floodgate players.
+# It's recommended to keep the default dot (.) as it doesn't conflict with other authentication methods.
+username-prefix: "."
+
+# Should we replace spaces in usernames with underscores?
+replace-spaces: true
+
+# Floodgate prepends a prefix to distinguish a Floodgate player from a Java player.
+# However, some people want to remove the prefix or change it.
+# You can do that with this option.
+# Available placeholders:
+# {prefix} - the prefix specified in the username-prefix option
+# {username} - the username of the player
+# {uuid} - the UUID of the player (only for offline servers)
+# Note: Changing this option requires server restart
+# Warning: Changing this option can cause conflicts with other authentication methods
+username-format: "{prefix}{username}"
+
+# This controls whether Floodgate should handle the login process.
+# If you're using a plugin like AuthMe, you should set this to false.
+handle-login: true
+
+# This controls whether Floodgate should handle the join process.
+# If you're using a plugin like AuthMe, you should set this to false.
+handle-join: true
+
+# This controls whether Floodgate should handle the quit process.
+# If you're using a plugin like AuthMe, you should set this to false.
+handle-quit: true
+
+# This controls the disconnect message that is sent to Bedrock players when they are disconnected.
+# Available placeholders:
+# {message} - the original disconnect message
+# {prefix} - the prefix specified in the username-prefix option
+# {username} - the username of the player
+# {uuid} - the UUID of the player (only for offline servers)
+disconnect-message: "{message}"
+
+# This controls whether Floodgate should allow Bedrock players to use skins from the internet.
+# This is disabled by default because it can be used to impersonate other players.
+allow-external-skins: false
+
+# This controls whether Floodgate should allow Bedrock players to use custom skins.
+# This is enabled by default.
+allow-custom-skins: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom capes.
+# This is enabled by default.
+allow-custom-capes: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom geometry.
+# This is enabled by default.
+allow-custom-geometry: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom animations.
+# This is enabled by default.
+allow-custom-animations: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom particles.
+# This is enabled by default.
+allow-custom-particles: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom sounds.
+# This is enabled by default.
+allow-custom-sounds: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom textures.
+# This is enabled by default.
+allow-custom-textures: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom models.
+# This is enabled by default.
+allow-custom-models: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom blocks.
+# This is enabled by default.
+allow-custom-blocks: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom items.
+# This is enabled by default.
+allow-custom-items: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom entities.
+# This is enabled by default.
+allow-custom-entities: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom biomes.
+# This is enabled by default.
+allow-custom-biomes: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom dimensions.
+# This is enabled by default.
+allow-custom-dimensions: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom recipes.
+# This is enabled by default.
+allow-custom-recipes: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom loot tables.
+# This is enabled by default.
+allow-custom-loot-tables: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom advancements.
+# This is enabled by default.
+allow-custom-advancements: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom functions.
+# This is enabled by default.
+allow-custom-functions: true
+
+# This controls whether Floodgate should allow Bedrock players to use custom tags.
+# This is enabled by default.
+allow-custom-tags: true
+
+# Configuration version - do not change!
+config-version: 1
